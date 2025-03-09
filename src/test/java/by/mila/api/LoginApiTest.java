@@ -1,59 +1,62 @@
 package by.mila.api;
 
-import io.restassured.RestAssured;
+import by.mila.api.utils.BaseApiTest;
 import io.restassured.response.Response;
 import org.json.JSONObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import static org.junit.Assert.*;
 
-public class LoginApiTest {
+public class LoginApiTest extends BaseApiTest {
     private static final String BASE_URL = "https://mila.by/local/gtools/login/";
-    private static final String EXPECTED_RESPONSE_PATH = "src/test/resources/expectedResponseLogin.json";
+    private static final String EXPECTED_RESPONSE_NEGATIVE_PATH = "src/test/resources/loginNegativeResponce.json";
+    private static final String EXPECTED_RESPONSE_EMPTY_PATH = "src/test/resources/loginNullResponce.json";
 
-    // Тестовые данные
-    private static final String TEST_LOGIN = "+375(29)302-46-12";
-    private static final String TEST_PASSWORD = "TestJava";
+    private static final String EMPTY_LOGIN = "";
+    private static final String EMPTY_PASSWORD = "";
+    private static final String TEST_NEG_LOGIN = "+375(29)302-46-12";
+    private static final String TEST_NEG_PASSWORD = "TestPython";
+    private static final String TEST_POSIT_LOGIN = "+375(29)302-46-11";
+    private static final String TEST_POSIT_PASSWORD = "TestJava";
+
+    @BeforeClass
+    public static void setUp() {
+        baseUrl = BASE_URL;
+        BaseApiTest.setUp();
+    }
 
     @Test
-    public void testLoginApiSuccess() throws Exception {
-        // 1. Формирование запроса
+    public void testLoginNegativeLogin() throws Exception {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("login", TEST_LOGIN);
-        requestBody.put("pass", TEST_PASSWORD);
+        requestBody.put("login", TEST_NEG_LOGIN);
+        requestBody.put("pass", TEST_POSIT_PASSWORD);
 
-        // 2. Отправка запроса
-        Response response = sendPostRequest(BASE_URL, requestBody.toString());
+        Response response = sendPostRequest(baseUrl, requestBody.toString());
 
-        // 3. Проверки
         assertStatusCode(response, 200);
-        assertJsonResponseMatchesExpected(response);
+        assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_NEGATIVE_PATH);
     }
 
-    private Response sendPostRequest(String url, String body) {
-        return RestAssured.given()
-                .header("Content-Type", "application/json")
-                .body(body)
-                .post(url);
+    @Test
+    public void testLoginNegativePassword() throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("login", TEST_POSIT_LOGIN);
+        requestBody.put("pass", TEST_NEG_PASSWORD);
+
+        Response response = sendPostRequest(baseUrl, requestBody.toString());
+
+        assertStatusCode(response, 200);
+        assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_NEGATIVE_PATH);
     }
 
-    private void assertStatusCode(Response response, int expectedStatusCode) {
-        assertEquals("Неверный статус-код ответа",
-                expectedStatusCode,
-                response.getStatusCode());
-    }
+    @Test
+    public void testEmptyCredentials() throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("login", EMPTY_LOGIN);
+        requestBody.put("pass", EMPTY_PASSWORD);
 
-    private void assertJsonResponseMatchesExpected(Response response) throws Exception {
-        // Чтение ожидаемого ответа
-        String expectedJson = new String(Files.readAllBytes(Paths.get(EXPECTED_RESPONSE_PATH)));
-        JSONObject expected = new JSONObject(expectedJson);
+        Response response = sendPostRequest(baseUrl, requestBody.toString());
 
-        // Парсинг актуального ответа
-        JSONObject actual = new JSONObject(response.getBody().asString());
-
-        // Сравнение JSON объектов
-        assertTrue("JSON структуры не совпадают",
-                actual.similar(expected));
+        assertStatusCode(response, 200);
+        assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_EMPTY_PATH);
     }
 }

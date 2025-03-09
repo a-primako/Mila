@@ -1,5 +1,7 @@
 package by.mila.front;
 
+import by.mila.front.testCred.SearchPage;
+import by.mila.front.utils.Singleton;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,6 @@ public class SearchTest {
 
     @AfterEach
     public void tearDown() {
-        Singleton.quit();
+        Singleton.quitDriver();
     }
 }

@@ -1,5 +1,7 @@
 package by.mila.front;
 
+import by.mila.front.testCred.MenuPage;
+import by.mila.front.utils.Singleton;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,6 @@ public class MenuTest {
 
     @AfterEach
     public void tearDown() {
-        Singleton.quit();
+        Singleton.quitDriver();
     }
 }

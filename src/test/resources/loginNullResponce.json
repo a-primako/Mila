@@ -1,0 +1,8 @@
+{
+  "result": {
+    "MESSAGE": "Неверный логин или пароль    .",
+    "ERROR_TYPE": "LOGIN2",
+    "TYPE": "ERROR"
+  },
+  "userData": false
+}
