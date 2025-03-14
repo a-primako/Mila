@@ -1,12 +1,17 @@
 package by.mila.api;
 
 import by.mila.api.utils.BaseApiTest;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
+import org.assertj.core.api.SoftAssertions;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@Epic("API Тесты")
+@Feature("Авторизация")
 public class LoginApiTest extends BaseApiTest {
+
     private static final String BASE_URL = "https://mila.by/local/gtools/login/";
     private static final String EXPECTED_RESPONSE_NEGATIVE_PATH = "src/test/resources/loginNegativeResponce.json";
     private static final String EXPECTED_RESPONSE_EMPTY_PATH = "src/test/resources/loginNullResponce.json";
@@ -25,38 +30,68 @@ public class LoginApiTest extends BaseApiTest {
     }
 
     @Test
+    @Story("Негативный тест: неверный логин")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Тест проверяет, что попытка авторизации с неверным логином возвращает правильный ответ")
     public void testLoginNegativeLogin() throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("login", TEST_NEG_LOGIN);
-        requestBody.put("pass", TEST_POSIT_PASSWORD);
+        SoftAssertions softly = initializeSoftAssertions();
 
-        Response response = sendPostRequest(baseUrl, requestBody.toString());
+        JSONObject requestBody = createRequestBody(TEST_NEG_LOGIN, TEST_POSIT_PASSWORD);
 
-        assertStatusCode(response, 200);
-        assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_NEGATIVE_PATH);
+        Response response = sendRequest(requestBody);
+
+        softly.assertThat(response.getStatusCode())
+                .as("Проверка статус-кода")
+                .isEqualTo(200);
+
+        softly.assertThatCode(() -> assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_NEGATIVE_PATH))
+                .as("Проверка JSON ответа")
+                .doesNotThrowAnyException();
+
+        softly.assertAll();
     }
 
     @Test
+    @Story("Негативный тест: неверный пароль")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Тест проверяет, что попытка авторизации с неверным паролем возвращает правильный ответ")
     public void testLoginNegativePassword() throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("login", TEST_POSIT_LOGIN);
-        requestBody.put("pass", TEST_NEG_PASSWORD);
+        SoftAssertions softly = initializeSoftAssertions();
 
-        Response response = sendPostRequest(baseUrl, requestBody.toString());
+        JSONObject requestBody = createRequestBody(TEST_POSIT_LOGIN, TEST_NEG_PASSWORD);
 
-        assertStatusCode(response, 200);
-        assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_NEGATIVE_PATH);
+        Response response = sendRequest(requestBody);
+
+        softly.assertThat(response.getStatusCode())
+                .as("Проверка статус-кода")
+                .isEqualTo(200);
+
+        softly.assertThatCode(() -> assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_NEGATIVE_PATH))
+                .as("Проверка JSON ответа")
+                .doesNotThrowAnyException();
+
+        softly.assertAll();
     }
 
     @Test
+    @Story("Негативный тест: пустые учетные данные")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Тест проверяет, что попытка авторизации с пустым логином и паролем возвращает правильный ответ")
     public void testEmptyCredentials() throws Exception {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("login", EMPTY_LOGIN);
-        requestBody.put("pass", EMPTY_PASSWORD);
+        SoftAssertions softly = initializeSoftAssertions();
 
-        Response response = sendPostRequest(baseUrl, requestBody.toString());
+        JSONObject requestBody = createRequestBody(EMPTY_LOGIN, EMPTY_PASSWORD);
 
-        assertStatusCode(response, 200);
-        assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_EMPTY_PATH);
+        Response response = sendRequest(requestBody);
+
+        softly.assertThat(response.getStatusCode())
+                .as("Проверка статус-кода")
+                .isEqualTo(200);
+
+        softly.assertThatCode(() -> assertJsonResponseMatchesExpected(response, EXPECTED_RESPONSE_EMPTY_PATH))
+                .as("Проверка JSON ответа")
+                .doesNotThrowAnyException();
+
+        softly.assertAll();
     }
 }

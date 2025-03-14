@@ -1,4 +1,4 @@
-package by.mila.front.testCred;
+package by.mila.ui.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

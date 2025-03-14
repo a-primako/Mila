@@ -1,4 +1,4 @@
-package by.mila.front.utils;
+package by.mila.ui.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -49,8 +49,8 @@ public class Singleton {
 
     private static void configureDriver() {
         driver.manage().timeouts()
-                .implicitlyWait(Duration.ofSeconds(10))
-                .pageLoadTimeout(Duration.ofSeconds(20));
+                .implicitlyWait(Duration.ofSeconds(30))
+                .pageLoadTimeout(Duration.ofSeconds(60));
     }
 
     public static synchronized void quitDriver() {

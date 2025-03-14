@@ -2,9 +2,11 @@ package by.mila.api.utils;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.assertj.core.api.SoftAssertions;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -17,10 +19,25 @@ public class BaseApiTest {
     }
 
     protected Response sendPostRequest(String url, String body) {
-        return RestAssured.given()
+        return given()
                 .header("Content-Type", "application/json")
                 .body(body)
                 .post(url);
+    }
+
+    protected JSONObject createRequestBody(String login, String password) {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("login", login);
+        requestBody.put("pass", password);
+        return requestBody;
+    }
+
+    protected Response sendRequest(JSONObject requestBody) {
+        return sendPostRequest(baseUrl, requestBody.toString());
+    }
+
+    protected SoftAssertions initializeSoftAssertions() {
+        return new SoftAssertions();
     }
 
     protected void assertStatusCode(Response response, int expectedStatusCode) {
@@ -28,6 +45,19 @@ public class BaseApiTest {
                 expectedStatusCode,
                 response.getStatusCode());
     }
+
+    protected void setupBaseUrl(String url) {
+        baseUrl = url;
+        BaseApiTest.setUp();
+    }
+
+    protected Response sendGetRequest(String paramName, String paramValue) {
+        if (paramName != null && paramValue != null) {
+            return given().queryParam(paramName, paramValue).when().get();
+        }
+        return given().when().get();
+    }
+
 
     protected void assertJsonResponseMatchesExpected(Response response, String expectedResponsePath) throws Exception {
         JSONObject expected = JsonUtils.readJsonFromFile(expectedResponsePath);
