@@ -31,7 +31,8 @@ public class Singleton {
 
     private static void setupChromeDriver() {
         WebDriverManager.chromedriver()
-                .clearDriverCache()
+//                .clearDriverCache()
+                .cachePath("C:\\jenkins\\webdriver_cache")
                 .forceDownload()
                 .avoidBrowserDetection()
                 .setup();
