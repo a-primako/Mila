@@ -37,14 +37,11 @@ public class Singleton {
                 .setup();
 
         ChromeOptions options = new ChromeOptions();
- /*       options.addArguments(
+        options.addArguments(
                "--start-maximized",
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
-                "--remote-allow-origins=*"  */
-                options.addArguments("--headless");
-                options.addArguments("--no-sandbox");
-                options.addArguments("--disable-dev-shm-usage"
+                "--remote-allow-origins=*"
         );
 
         driver = new ChromeDriver(options);
