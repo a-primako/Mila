@@ -5,6 +5,7 @@ import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.junit.Test;
 
+@Epic("API Тесты")
 public class GetApiTests extends BaseApiTest {
 
     private static final String SEARCH_URL = "https://mila.by/search/";
@@ -14,7 +15,6 @@ public class GetApiTests extends BaseApiTest {
     private static final String SEARCH_QUERY = "помада";
 
     @Test
-    @Epic("API Тесты")
     @Feature("Поиск товаров")
     @Story("Проверка поиска по ключевому слову")
     @Severity(SeverityLevel.CRITICAL)
@@ -28,7 +28,6 @@ public class GetApiTests extends BaseApiTest {
     }
 
     @Test
-    @Epic("API Тесты")
     @Feature("Главная страница")
     @Story("Доступность главной страницы")
     @Severity(SeverityLevel.NORMAL)
@@ -42,7 +41,6 @@ public class GetApiTests extends BaseApiTest {
     }
 
     @Test
-    @Epic("API Тесты")
     @Feature("Карточка товара")
     @Story("Доступность карточки конкретного товара")
     @Severity(SeverityLevel.NORMAL)
@@ -56,7 +54,6 @@ public class GetApiTests extends BaseApiTest {
     }
 
     @Test
-    @Epic("API Тесты")
     @Feature("Каталог товаров")
     @Story("Доступность каталога")
     @Severity(SeverityLevel.NORMAL)

@@ -114,9 +114,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
-                    <argLine>
-                        --add-opens java.base/java.lang=ALL-UNNAMED
-                    </argLine>
                     <testFailureIgnore>true</testFailureIgnore>
                     <properties>
                         <property>
