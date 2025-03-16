@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import org.junit.Test;
 
 @Epic("API Тесты")
-public class GetApiTests extends BaseApiTest {
+public class GetApiTest extends BaseApiTest {
 
     private static final String SEARCH_URL = "https://mila.by/search/";
     private static final String MAIN_PAGE_URL = "https://mila.by/";
