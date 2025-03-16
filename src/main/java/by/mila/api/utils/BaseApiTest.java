@@ -7,8 +7,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
 
 public class BaseApiTest {
     protected static String baseUrl;
@@ -41,9 +40,10 @@ public class BaseApiTest {
     }
 
     protected void assertStatusCode(Response response, int expectedStatusCode) {
-        assertEquals("Неверный статус-код ответа",
-                expectedStatusCode,
-                response.getStatusCode());
+        initializeSoftAssertions()
+                .assertThat(response.statusCode())
+                .as("Неверный статус-код ответа")
+                .isEqualTo(expectedStatusCode);
     }
 
     protected void setupBaseUrl(String url) {
@@ -62,6 +62,9 @@ public class BaseApiTest {
     protected void assertJsonResponseMatchesExpected(Response response, String expectedResponsePath) throws Exception {
         JSONObject expected = JsonUtils.readJsonFromFile(expectedResponsePath);
         JSONObject actual = new JSONObject(response.getBody().asString());
-        assertTrue("JSON структуры не совпадают", JsonUtils.areJsonSimilar(expected, actual));
+        initializeSoftAssertions()
+                .assertThat(actual.toString())
+                .as("JSON структуры не совпадают")
+                .isEqualTo(expected.toString());
     }
 }
