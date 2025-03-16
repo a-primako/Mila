@@ -3,7 +3,7 @@ package by.mila.api;
 import by.mila.api.utils.BaseApiTest;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @Epic("API Тесты")
 public class GetApiTest extends BaseApiTest {

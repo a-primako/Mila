@@ -5,8 +5,8 @@ import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONObject;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 @Epic("API Тесты")
 @Feature("Авторизация")
@@ -23,7 +23,7 @@ public class LoginApiTest extends BaseApiTest {
     private static final String TEST_POSIT_LOGIN = "+375(29)302-46-11";
     private static final String TEST_POSIT_PASSWORD = "TestJava";
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         baseUrl = BASE_URL;
         BaseApiTest.setUp();
